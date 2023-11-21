@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: socat-proxy
+  namespace: default
+spec:
+  containers:
+  - image: alpine/socat
+    name: socat-proxy
+    command: ["/bin/sh"]
+    # "-d -d" is here to make the output verbose
+    # TCP-LISTEN to listen for a TCP stream
+    # Define a port to listen on
+    # Fork to enable ...
+    # TCP to forwards with TCP protocol
+    # URL to forwards to
+    # Port to forward to
+    args: ["-c","socat -d -d TCP-LISTEN:[PORTHERE],fork TCP:[URLHERE]:[PORTHERE]"]
+    ports:
+    - containerPort: [inserthere]
+      name: [nameofporthere]  
+      protocol: TCP
+    resources:
+      # just to have some defaults here
+      # however memory utilization isn't a thing for this setup
+      limits:
+        cpu: 500m
+        memory: 250Mi
+      requests:
+        cpu: 100m
+        memory: 50Mi
